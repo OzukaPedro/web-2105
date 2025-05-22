@@ -7,10 +7,11 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <h1>Agora são:</h1>
-        <h2 id="relogio"></h2>
-        <button onclick="pausarRelogio()" id="botao">Parar</button>
-        <hr />
+        <div class="container">
+            <h1>Agora são:</h1>
+            <h2 id="relogio"></h2>
+            <button onclick="pausarRelogio()" id="botao">Parar</button>
+        </div>
 
         <script>
             let intervalo;
@@ -45,15 +46,18 @@
 
             iniciarRelogio(); // inicia ao carregar a página
         </script>
-        <h1>Cronômetro</h1>
-        <h2 id="cronometro">00:00:00</h2>
-        <div>
-            <button onclick="iniciarCronometro()">Iniciar</button>
-            <button onclick="pausar()">Pausar</button>
-            <button onclick="zerar()">Zerar</button>
+        <div class="container">
+            <h1>Cronômetro</h1>
+            <h2 id="cronometro">00:00:00</h2>
+            <div>
+                <button onclick="iniciarCronometro()">Iniciar</button>
+                <button onclick="pausar()" id="pause">Pausar</button>
+                <button onclick="zerar()">Zerar</button>
+            </div>
         </div>
 
         <script>
+            let troca = true;
             let segundos = 0;
             let i = null;
 
@@ -82,8 +86,19 @@
             }
 
             function pausar() {
-                clearInterval(i);
-                i = null;
+                if (troca) {
+                    clearInterval(i);
+                    i = null;
+                    document.getElementById("pause").innerText = "Retomar";
+                    troca = !troca;
+                } else {
+                    i = setInterval(() => {
+                        segundos++;
+                        atualizarDisplay();
+                    }, 1000);
+                    document.getElementById("pause").innerText = "Pausar";
+                    troca = !troca;
+                }
             }
 
             function zerar() {
